@@ -26,7 +26,7 @@
 
 	<!-- android -->
 	<platform name="android">
-		<hook type="before_prepare" src="hooks/before_build_MoveGoogleServices.js" />
+		<hook type="before_plugin_add" src="hooks/before_build_MoveGoogleServices.js" />
 		<hook type="before_plugin_install" src="hooks/outsystems/handle_google_services.js" />
 		<hook type="before_plugin_install" src="hooks/outsystems/handle_agconnect_services.js" />
 		<hook type="after_plugin_install" src="hooks/outsystems/google_services_cleanup.js" />
