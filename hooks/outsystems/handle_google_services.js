@@ -38,6 +38,7 @@ function getZipFile(resourcesFolder, prefZipFilename) {
             console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
         }
         resourcesFolder = path.join(appId, resourcesFolder);
+        console.log(resourcesFolder);
 
         var dirFiles = fs.readdirSync(resourcesFolder);
         var zipFile;
