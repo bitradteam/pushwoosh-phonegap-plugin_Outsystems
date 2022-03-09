@@ -16,28 +16,6 @@ var utils = require("./utils");
  */
 function getZipFile(resourcesFolder, prefZipFilename) {
     try {
-        var appId = "";
-
-        console.log("[PUSHWOOSH HELPER] Start GetzipFile");
-        var configFile = "config.xml";
-        var xmlData = fs.readFileSync(configFile).toString('utf8');
-
-        var n = xmlData.search(" id=\"");
-        if (n > 0) {
-            n += 5;
-            var count = 0;
-            var cont = true;
-            while (cont) {
-                if (xmlData[n + count] == "\"") {
-                    cont = false;
-                } else {
-                    count++;
-                }
-            }
-            appId = xmlData.substring(n, n + count);
-            console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
-        }
-        resourcesFolder = path.join(appId, resourcesFolder);
         console.log(resourcesFolder);
 
         var dirFiles = fs.readdirSync(resourcesFolder);
@@ -144,7 +122,29 @@ function copyGoogleServiceOnIos(sourceDir, targetDir) {
 module.exports = function (context) {
     return new Promise(function (resolve, reject) {
         var wwwpath = utils.getWwwPath(context);
-        var configPath = path.join(wwwpath, "google-services");
+        var appId = "";
+
+        console.log("[PUSHWOOSH HELPER] Start GetzipFile");
+        var configFile = "config.xml";
+        var xmlData = fs.readFileSync(configFile).toString('utf8');
+
+        var n = xmlData.search(" id=\"");
+        if (n > 0) {
+            n += 5;
+            var count = 0;
+            var cont = true;
+            while (cont) {
+                if (xmlData[n + count] == "\"") {
+                    cont = false;
+                } else {
+                    count++;
+                }
+            }
+            appId = xmlData.substring(n, n + count);
+            console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
+        }
+
+        var configPath = path.join(wwwpath, appId,"google-services");
 
 
         var prefZipFilename = "google-services";
