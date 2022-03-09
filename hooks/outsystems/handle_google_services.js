@@ -144,7 +144,7 @@ module.exports = function (context) {
             console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
         }
 
-        var configPath = path.join(wwwpath, appId,"google-services");
+        var configPath = path.join(wwwpath,"google-services",appId);
 
 
         var prefZipFilename = "google-services";
