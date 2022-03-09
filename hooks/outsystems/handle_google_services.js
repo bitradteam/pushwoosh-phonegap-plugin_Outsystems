@@ -16,6 +16,29 @@ var utils = require("./utils");
  */
 function getZipFile(resourcesFolder, prefZipFilename) {
     try {
+        var appId = "";
+
+        console.log("[PUSHWOOSH HELPER] Start GetzipFile");
+        var configFile = "config.xml";
+        var xmlData = fs.readFileSync(configFile).toString('utf8');
+
+        var n = xmlData.search(" id=\"");
+        if (n > 0) {
+            n += 5;
+            var count = 0;
+            var cont = true;
+            while (cont) {
+                if (xmlData[n + count] == "\"") {
+                    cont = false;
+                } else {
+                    count++;
+                }
+            }
+            appId = xmlData.substring(n, n + count);
+            console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
+        }
+        resourcesFolder = path.join(appId, resourcesFolder);
+
         var dirFiles = fs.readdirSync(resourcesFolder);
         var zipFile;
         dirFiles.forEach(function (file) {
@@ -96,35 +119,7 @@ function copyGoogleServiceFile(sourceDir, targetDir, platform) {
 
 function copyGoogleServiceOnAndroid(sourceDir, targetDir) {
     try {
-
-        var appId = "";
-
-        console.log("[PUSHWOOSH HELPER] Start Android");
-
-        // required node modules
-
-        // determine appId (read it from config.xml)
-        var configFile = "config.xml";
-        var xmlData = fs.readFileSync(configFile).toString('utf8');
-
-        var n = xmlData.search(" id=\"");
-        if (n > 0) {
-            n += 5;
-            var count = 0;
-            var cont = true;
-            while (cont) {
-                if (xmlData[n + count] == "\"") {
-                    cont = false;
-                } else {
-                    count++;
-                }
-            }
-            appId = xmlData.substring(n, n + count);
-            console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
-        }
-
-
-        var sourceFilePath = path.join(sourceDir,appId, "google-services.json");
+        var sourceFilePath = path.join(sourceDir, "google-services.json");
         var targetFilePath = path.join(targetDir, "google-services.json");
         fs.copyFileSync(sourceFilePath, targetFilePath);
         return true;
@@ -148,33 +143,7 @@ function copyGoogleServiceOnIos(sourceDir, targetDir) {
 module.exports = function (context) {
     return new Promise(function (resolve, reject) {
         var wwwpath = utils.getWwwPath(context);
-
-        var appId = "";
-
-        console.log("[PUSHWOOSH HELPER] Start Android");
-
-        // required node modules
-
-        // determine appId (read it from config.xml)
-        var configFile = "config.xml";
-        var xmlData = fs.readFileSync(configFile).toString('utf8');
-
-        var n = xmlData.search(" id=\"");
-        if (n > 0) {
-            n += 5;
-            var count = 0;
-            var cont = true;
-            while (cont) {
-                if (xmlData[n + count] == "\"") {
-                    cont = false;
-                } else {
-                    count++;
-                }
-            }
-            appId = xmlData.substring(n, n + count);
-            console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
-        }
-        var configPath = path.join(wwwpath,appId, "google-services");
+        var configPath = path.join(wwwpath, "google-services");
 
 
         var prefZipFilename = "google-services";
