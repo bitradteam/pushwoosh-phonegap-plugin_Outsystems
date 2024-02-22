@@ -149,6 +149,8 @@ module.exports = function (context) {
         var existingFiles = ["google-services.json", "GoogleService-Info.plist"];
         existingFiles.forEach(function (file) {
             var filePath = path.join(configPath, file);
+            console.log("[PUSHWOOSH HELPER] File path:", filePath);
+            console.log("[PUSHWOOSH HELPER] File exists?:", fs.existsSync(filePath))
             if (fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath);
                 console.log("[PUSHWOOSH HELPER] Deleted existing file:", filePath);
