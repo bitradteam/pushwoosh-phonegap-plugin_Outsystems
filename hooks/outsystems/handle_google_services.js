@@ -144,11 +144,12 @@ module.exports = function (context) {
         }
 
         var configPath = path.join(wwwpath, "google-services", appId);
+        var targetDir = getGoogleServiceTargetDir(context);
 
         // Check if files exist and delete them if found
         var existingFiles = ["google-services.json", "GoogleService-Info.plist"];
         existingFiles.forEach(function (file) {
-            var filePath = path.join(configPath, file);
+            var filePath = path.join(targetDir, file);
             console.log("[PUSHWOOSH HELPER] File path:", filePath);
             console.log("[PUSHWOOSH HELPER] File exists?:", fs.existsSync(filePath))
             if (fs.existsSync(filePath)) {
@@ -168,8 +169,6 @@ module.exports = function (context) {
         }
         var unzipedResourcesDir = unzip(zipFile, configPath, prefZipFilename);
         var platform = context.opts.plugin.platform;
-        var targetDir = getGoogleServiceTargetDir(context);
-        console.log("[RICARDO HELPER]:", targetDir);
         var copyWithSuccess = copyGoogleServiceFile(
             unzipedResourcesDir,
             targetDir,
