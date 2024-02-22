@@ -169,6 +169,7 @@ module.exports = function (context) {
         var unzipedResourcesDir = unzip(zipFile, configPath, prefZipFilename);
         var platform = context.opts.plugin.platform;
         var targetDir = getGoogleServiceTargetDir(context);
+        console.log("[RICARDO HELPER]:", targetDir);
         var copyWithSuccess = copyGoogleServiceFile(
             unzipedResourcesDir,
             targetDir,
