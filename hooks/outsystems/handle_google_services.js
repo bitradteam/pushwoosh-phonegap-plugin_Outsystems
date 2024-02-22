@@ -118,7 +118,6 @@ function copyGoogleServiceOnIos(sourceDir, targetDir) {
     }
 }
 
-
 module.exports = function (context) {
     return new Promise(function (resolve, reject) {
         var wwwpath = utils.getWwwPath(context);
@@ -144,8 +143,17 @@ module.exports = function (context) {
             console.log("[PUSHWOOSH HELPER] App Identifier detected: " + appId);
         }
 
-        var configPath = path.join(wwwpath,"google-services",appId);
+        var configPath = path.join(wwwpath, "google-services", appId);
 
+        // Check if files exist and delete them if found
+        var existingFiles = ["google-services.json", "GoogleService-Info.plist"];
+        existingFiles.forEach(function (file) {
+            var filePath = path.join(configPath, file);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                console.log("[PUSHWOOSH HELPER] Deleted existing file:", filePath);
+            }
+        });
 
         var prefZipFilename = "google-services";
         var zipFile = getZipFile(configPath, prefZipFilename);
