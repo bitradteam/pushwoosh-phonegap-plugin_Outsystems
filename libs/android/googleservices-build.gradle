@@ -24,7 +24,7 @@ ext.pushwoosh = "6.4.2"
 cdvPluginPostBuildExtras.push({
   dependencies {
     def supportVersion = getVersion()
-    implementation "com.google.firebase:firebase-core:(+,19.0.99]"
+    /*implementation "com.google.firebase:firebase-core:(+,19.0.99]"*/
     implementation "com.google.firebase:firebase-messaging:(+,22.0.99]"
     implementation "com.android.support:support-v4:${supportVersion}"
     implementation "com.android.support:appcompat-v7:${supportVersion}"
@@ -52,5 +52,6 @@ ext.postBuildExtras = {
         // apply plugin: 'com.google.gms.google-services'
         // class must be used instead of id(string) to be able to apply plugin from non-root gradle file
         apply plugin: com.google.gms.googleservices.GoogleServicesPlugin
+        googleServices.disableVersionCheck = true
     }
 }
